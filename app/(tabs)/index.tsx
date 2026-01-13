@@ -5,7 +5,7 @@ import TopAppBar from "@/components/shared/TopAppBar";
 const HomePage = () => {
   return (
     <>
-      <TopAppBar title="Home" />
+      <TopAppBar title="MyTrA" />
       <View>
         <Text>HomePage</Text>
       </View>
