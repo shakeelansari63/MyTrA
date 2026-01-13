@@ -1,0 +1,35 @@
+name: Build App Bundle
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "app.json"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 22.x
+
+      - name: Install EAS Cli
+        id: install-eas-cli
+        run: npm i -g eas-cli
+
+      - name: Install Required dependencies
+        id: npm-install
+        run: npm install
+
+      - name: EAS Build
+        id: eas-build
+        run: eas build -p android --profile production --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

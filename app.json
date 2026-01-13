@@ -2,7 +2,7 @@
   "expo": {
     "name": "mytra",
     "slug": "mytra",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "mytra",
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "me.shakeelansari.mytra"
     },
     "web": {
       "output": "static",
@@ -43,6 +44,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c7443425-7812-4dd4-899e-dbf01ec3a48f"
+      }
+    },
+    "owner": "shakeelansari63"
   }
 }
