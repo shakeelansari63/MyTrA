@@ -3,7 +3,7 @@ import React from "react";
 import { Easing, Platform } from "react-native";
 import { Icon, useTheme, Text, BottomNavigation } from "react-native-paper";
 import { CommonActions } from "@react-navigation/native";
-import { HapticTab } from "@/components/HapticTab";
+import { HapticTab } from "@/components/shared/HapticTab";
 
 export default function TabLayout() {
   const theme = useTheme();
