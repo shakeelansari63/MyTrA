@@ -1,14 +1,12 @@
-import { View } from "react-native";
 import { Text } from "react-native-paper";
-import TopAppBar from "@/components/shared/TopAppBar";
+import ViewWithXMargin from "@/components/shared/ViewWithXMargin";
 
 const SettingsPage = () => {
   return (
     <>
-      <TopAppBar title="Settings" />
-      <View>
+      <ViewWithXMargin>
         <Text>SettingsPage</Text>
-      </View>
+      </ViewWithXMargin>
     </>
   );
 };

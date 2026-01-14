@@ -1,14 +1,14 @@
-import { View } from "react-native";
 import { Text } from "react-native-paper";
 import TopAppBar from "@/components/shared/TopAppBar";
+import TitleWithIcon from "@/components/home/TitleWithIcon";
+import ViewWithXMargin from "@/components/shared/ViewWithXMargin";
 
 const HomePage = () => {
   return (
     <>
-      <TopAppBar title="MyTrA" />
-      <View>
+      <ViewWithXMargin>
         <Text>HomePage</Text>
-      </View>
+      </ViewWithXMargin>
     </>
   );
 };
