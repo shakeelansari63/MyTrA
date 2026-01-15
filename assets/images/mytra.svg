@@ -7,7 +7,7 @@
    viewBox="0 0 132.29166 132.29166"
    version="1.1"
    id="svg1"
-   sodipodi:docname="mytra-light.svg"
+   sodipodi:docname="mytra.svg"
    inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
    inkscape:export-filename="icon.png"
    inkscape:export-xdpi="96"
@@ -56,7 +56,7 @@
      id="layer1">
     <path
        id="rect2"
-       style="fill:#b232f3;fill-opacity:1;stroke:#b232f3;stroke-width:2.64583;stroke-linejoin:round;stroke-opacity:1"
+       style="fill:#3b7978;fill-opacity:1;stroke:#3b7978;stroke-width:2.64583;stroke-linejoin:round;stroke-opacity:1"
        d="M 36.277965,36.086708 H 95.79824 c 9.86535,0 17.80751,7.942157 17.80751,17.807528 0,9.86537 -7.94216,17.807527 -17.80751,17.807527 H 36.277965 c -9.865371,0 -17.807528,-7.942157 -17.807528,-17.807527 0,-9.865371 7.942157,-17.807528 17.807528,-17.807528 z" />
     <path
        id="rect1"

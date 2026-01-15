@@ -11,6 +11,7 @@ import TitleWithIcon from "./TitleWithIcon";
 import AppAvatar from "./AppAvatar";
 import * as Linking from "expo-linking";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { EXTERNAL_LINKS } from "@/constants/Links";
 
 export type DrawerItemInfo = {
   key: string;
@@ -52,6 +53,7 @@ const StyledDrawer = (props: DrawerContentComponentProps) => {
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
+
       {/* Add Extra Items at bottom*/}
       <DrawerItem
         label="Star us on Github"
@@ -59,7 +61,7 @@ const StyledDrawer = (props: DrawerContentComponentProps) => {
         icon={({ color, size }) => (
           <Icon source="github" size={size} color={color} />
         )}
-        onPress={() => openUrl("https://github.com/shakeelansari63/MyTrA")}
+        onPress={() => openUrl(EXTERNAL_LINKS.github)}
       />
     </>
   );

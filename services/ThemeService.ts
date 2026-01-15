@@ -11,8 +11,6 @@ import {
 import merge from "deepmerge";
 import { ThemeColor } from "@/constants/Colors";
 
-export type AppTheme = MD3Theme;
-
 // Change Material Dark Theme Primary Color
 const MaterialDarkTheme = {
   ...MD3DarkTheme,
@@ -37,3 +35,6 @@ const PaperDark = merge(DarkTheme, MaterialDarkTheme);
 
 // Return Light and Dark themes in List
 export const themes = { lightTheme: PaperLight, darkTheme: PaperDark };
+
+// Type definition of Theme
+export type AppTheme = typeof PaperLight;

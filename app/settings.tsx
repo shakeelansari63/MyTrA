@@ -1,14 +1,14 @@
-import { Text } from "react-native-paper";
 import ViewWithXMargin from "@/components/shared/ViewWithXMargin";
+import SettingPage from "@/components/settings/SettingPage";
 
-const SettingsPage = () => {
+const SettingsPageWrapper = () => {
   return (
     <>
       <ViewWithXMargin>
-        <Text>SettingsPage</Text>
+        <SettingPage />
       </ViewWithXMargin>
     </>
   );
 };
 
-export default SettingsPage;
+export default SettingsPageWrapper;
