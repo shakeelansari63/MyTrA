@@ -6,25 +6,53 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PaperStyledDrawer, {
   type DrawerItemInfo,
+  type DrawerItemsInSections,
 } from "@/components/shared/PaperStyledDrawer";
+import { useRouter } from "expo-router";
 
 const DrawerApp = () => {
-  const drawerItems: DrawerItemInfo[] = [
+  const router = useRouter();
+
+  const rootItems: DrawerItemInfo[] = [
     {
       key: "index",
       label: "Home",
-      icon: "robot-happy",
-      headerTitle: "MyTrA",
-      showHeaderIcon: true,
-    },
-    {
-      key: "settings",
-      label: "Setup",
-      icon: "wrench-cog",
-      headerTitle: "Setup",
-      showHeaderIcon: false,
+      icon: "home-assistant",
+      onPress: () => router.navigate("/"),
     },
   ];
+
+  const settingSectionItems: DrawerItemInfo[] = [
+    {
+      key: "llms",
+      label: "LLMs",
+      icon: "chat-processing-outline",
+      onPress: () => router.navigate("/llms"),
+    },
+    {
+      key: "mcps",
+      label: "MCP Servers",
+      icon: "server-network-outline",
+      onPress: () => router.navigate("/mcps"),
+    },
+    {
+      key: "agents",
+      label: "Agents",
+      icon: "robot-excited-outline",
+      onPress: () => router.navigate("/agents"),
+    },
+  ];
+
+  const drawerItems: DrawerItemsInSections = {
+    root: rootItems,
+    sections: [
+      {
+        title: "Setup",
+        items: settingSectionItems,
+      },
+    ],
+  };
+
   return <PaperStyledDrawer drawerItems={drawerItems} />;
 };
 

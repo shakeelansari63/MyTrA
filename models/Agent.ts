@@ -3,5 +3,6 @@ export type Agent = {
   name: string;
   llm: string;
   mcpServers: string[];
-  systemPrompt: string;
+  role: string;
+  taskDetail: string;
 };

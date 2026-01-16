@@ -1,19 +1,22 @@
-import { Agent } from "@/models/Agent";
-import { LLMDetail } from "@/models/LLMDetail";
-import { MCPServer } from "@/models/MCPServer";
-import { CurrentBot } from "@/models/CurrentBot";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type HasId = {
   id: string;
 };
 
-const LLMKEY = "LLMS";
-const MCPKEY = "MCPS";
-const AGENTKEY = "AGENTS";
-const CURRENTBOT = "CURRENTBOT";
+export const saveRowToStore = async (key: string, value: any) => {
+  await AsyncStorage.setItem(key, JSON.stringify(value));
+};
 
-const saveToStore = async <T extends HasId>(key: string, value: T) => {
+export const getRowFromStore = async (key: string): Promise<any | null> => {
+  const storedData = await AsyncStorage.getItem(key);
+  return storedData ? JSON.parse(storedData) : null;
+};
+
+export const saveRowToListStore = async <T extends HasId>(
+  key: string,
+  value: T,
+) => {
   // Get the Stored LLMs List
   const storedData = await AsyncStorage.getItem(key);
 
@@ -39,12 +42,14 @@ const saveToStore = async <T extends HasId>(key: string, value: T) => {
   await AsyncStorage.setItem(key, JSON.stringify(dataList));
 };
 
-const getAllFromStore = async <T extends HasId>(key: string): Promise<T[]> => {
+export const getAllRowsFromListStore = async <T extends HasId>(
+  key: string,
+): Promise<T[]> => {
   const storedData = await AsyncStorage.getItem(key);
   return storedData ? (JSON.parse(storedData) as T[]) : [];
 };
 
-const getByIdFromStore = async <T extends HasId>(
+export const getRowByIdFromListStore = async <T extends HasId>(
   key: string,
   id: string,
 ): Promise<T | null> => {
@@ -56,50 +61,4 @@ const getByIdFromStore = async <T extends HasId>(
   // Parse stored data and find item by id
   const dataList = JSON.parse(storedData) as T[];
   return dataList.find((item) => item.id === id) || null;
-};
-
-// Exported methods
-export const saveLLM = async (llm: LLMDetail) => {
-  await saveToStore(LLMKEY, llm);
-};
-
-export const saveMCP = async (mcp: MCPServer) => {
-  await saveToStore(MCPKEY, mcp);
-};
-
-export const saveAgent = async (agent: Agent) => {
-  await saveToStore(AGENTKEY, agent);
-};
-
-export const saveCurrentBot = async (bot: CurrentBot) => {
-  await AsyncStorage.setItem(CURRENTBOT, JSON.stringify(bot));
-};
-
-export const getAllLLMs = async () => {
-  return await getAllFromStore<LLMDetail>(LLMKEY);
-};
-
-export const getAllMCPs = async () => {
-  return await getAllFromStore<MCPServer>(MCPKEY);
-};
-
-export const getAllAgents = async () => {
-  return await getAllFromStore<Agent>(AGENTKEY);
-};
-
-export const getCurrentBot = async () => {
-  const storedData = await AsyncStorage.getItem(CURRENTBOT);
-  return storedData ? (JSON.parse(storedData) as CurrentBot) : null;
-};
-
-export const getLLMById = async (id: string) => {
-  return await getByIdFromStore<LLMDetail>(LLMKEY, id);
-};
-
-export const getMCPById = async (id: string) => {
-  return await getByIdFromStore<MCPServer>(MCPKEY, id);
-};
-
-export const getAgentById = async (id: string) => {
-  return await getByIdFromStore<Agent>(AGENTKEY, id);
 };

@@ -1,20 +1,19 @@
 import TopAppBar from "@/components/shared/TopAppBar";
 import TitleWithIcon from "@/components/shared/TitleWithIcon";
 import { useDrawer } from "@/hooks/useDrawer";
-import ChatPage from "@/components/home/ChatPage";
+import LLMSetupPage from "@/components/llm/LLMSetupPage";
 
-const HomePage = () => {
+const LLMsPageWrapper = () => {
   const { toggleDrawer } = useDrawer();
-
   return (
     <>
       <TopAppBar
-        leftComponent={<TitleWithIcon title="MyTrA" showIcon={true} />}
+        leftComponent={<TitleWithIcon title="LLMs" showIcon={true} />}
         onTitlePressed={toggleDrawer}
       />
-      <ChatPage />
+      <LLMSetupPage />
     </>
   );
 };
 
-export default HomePage;
+export default LLMsPageWrapper;

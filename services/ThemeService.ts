@@ -27,6 +27,8 @@ const MaterialLightTheme = {
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
+  materialLight: MaterialLightTheme,
+  materialDark: MaterialDarkTheme,
 });
 
 // Generate Combined Themes for Dark and Light

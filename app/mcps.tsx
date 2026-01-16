@@ -1,20 +1,19 @@
 import TopAppBar from "@/components/shared/TopAppBar";
 import TitleWithIcon from "@/components/shared/TitleWithIcon";
 import { useDrawer } from "@/hooks/useDrawer";
-import ChatPage from "@/components/home/ChatPage";
+import MCPSetupPage from "@/components/mcp/MCPSetupPage";
 
-const HomePage = () => {
+const MCPsPageWrapper = () => {
   const { toggleDrawer } = useDrawer();
-
   return (
     <>
       <TopAppBar
-        leftComponent={<TitleWithIcon title="MyTrA" showIcon={true} />}
+        leftComponent={<TitleWithIcon title="MCP Servers" showIcon={true} />}
         onTitlePressed={toggleDrawer}
       />
-      <ChatPage />
+      <MCPSetupPage />
     </>
   );
 };
 
-export default HomePage;
+export default MCPsPageWrapper;

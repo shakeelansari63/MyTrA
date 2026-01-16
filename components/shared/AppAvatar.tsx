@@ -1,5 +1,4 @@
 import { useColorScheme } from "react-native";
-import React from "react";
 import { Avatar } from "react-native-paper";
 
 type Props = {

@@ -1,20 +1,19 @@
 import TopAppBar from "@/components/shared/TopAppBar";
 import TitleWithIcon from "@/components/shared/TitleWithIcon";
 import { useDrawer } from "@/hooks/useDrawer";
-import ChatPage from "@/components/home/ChatPage";
+import AgentSetupPage from "@/components/agent/AgentSetupPage";
 
-const HomePage = () => {
+const AgentsPageWrapper = () => {
   const { toggleDrawer } = useDrawer();
-
   return (
     <>
       <TopAppBar
-        leftComponent={<TitleWithIcon title="MyTrA" showIcon={true} />}
+        leftComponent={<TitleWithIcon title="Agents" showIcon={true} />}
         onTitlePressed={toggleDrawer}
       />
-      <ChatPage />
+      <AgentSetupPage />
     </>
   );
 };
 
-export default HomePage;
+export default AgentsPageWrapper;

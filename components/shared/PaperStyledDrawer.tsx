@@ -2,12 +2,9 @@ import Drawer from "expo-router/drawer";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
 } from "@react-navigation/drawer";
-import { Icon, Text } from "react-native-paper";
+import { Icon, Text, Drawer as PaperDrawer } from "react-native-paper";
 import { View } from "react-native";
-import TitleWithIcon from "./TitleWithIcon";
 import AppAvatar from "./AppAvatar";
 import * as Linking from "expo-linking";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -16,13 +13,20 @@ import { EXTERNAL_LINKS } from "@/constants/Links";
 export type DrawerItemInfo = {
   key: string;
   label: string;
-  headerTitle: string;
-  showHeaderIcon: boolean;
   icon: string;
+  onPress: () => void;
+};
+
+export type DrawerItemsInSections = {
+  root: DrawerItemInfo[];
+  sections: {
+    title: string;
+    items: DrawerItemInfo[];
+  }[];
 };
 
 type Props = {
-  drawerItems: DrawerItemInfo[];
+  drawerItems: DrawerItemsInSections;
 };
 
 const openUrl = async (url: string) => {
@@ -31,12 +35,17 @@ const openUrl = async (url: string) => {
   if (isUrlSupported) await Linking.openURL(url);
 };
 
-const StyledDrawer = (props: DrawerContentComponentProps) => {
+type StyledDrawerProps = {
+  drawerProps: DrawerContentComponentProps;
+  drawerItems: DrawerItemsInSections;
+};
+
+const StyledDrawer = ({ drawerProps, drawerItems }: StyledDrawerProps) => {
   const safeInsets = useSafeAreaInsets();
 
   return (
     <>
-      <DrawerContentScrollView {...props}>
+      <DrawerContentScrollView {...drawerProps}>
         <View
           style={{
             display: "flex",
@@ -51,11 +60,38 @@ const StyledDrawer = (props: DrawerContentComponentProps) => {
             <Text variant="bodySmall">My True Assistant</Text>
           </View>
         </View>
-        <DrawerItemList {...props} />
+
+        {/* Show Root Items */}
+        {drawerItems.root.map((item) => (
+          <PaperDrawer.Item
+            key={item.key}
+            label={item.label}
+            icon={item.icon}
+            onPress={item.onPress}
+          />
+        ))}
+
+        {/* Show Items in Section */}
+        {drawerItems.sections.map((section) => (
+          <PaperDrawer.Section
+            key={section.title}
+            title={section.title}
+            showDivider={false}
+          >
+            {section.items.map((item) => (
+              <PaperDrawer.Item
+                key={item.key}
+                label={item.label}
+                icon={item.icon}
+                onPress={item.onPress}
+              />
+            ))}
+          </PaperDrawer.Section>
+        ))}
       </DrawerContentScrollView>
 
       {/* Add Extra Items at bottom*/}
-      <DrawerItem
+      <PaperDrawer.Item
         label="Star us on Github"
         style={{ marginTop: "auto", marginBottom: safeInsets.bottom + 5 }}
         icon={({ color, size }) => (
@@ -69,27 +105,12 @@ const StyledDrawer = (props: DrawerContentComponentProps) => {
 
 const PaperStyledDrawer = ({ drawerItems }: Props) => {
   return (
-    <Drawer drawerContent={StyledDrawer}>
-      {drawerItems.map((item) => (
-        <Drawer.Screen
-          key={item.key}
-          name={item.key}
-          options={{
-            drawerLabel: item.label,
-            title: item.headerTitle,
-            drawerIcon: ({ color, size }) => (
-              <Icon source={item.icon} size={size} color={color} />
-            ),
-            headerTitle: () => (
-              <TitleWithIcon
-                title={item.headerTitle}
-                showIcon={item.showHeaderIcon}
-              />
-            ),
-          }}
-        />
-      ))}
-    </Drawer>
+    <Drawer
+      drawerContent={(props) => (
+        <StyledDrawer drawerProps={props} drawerItems={drawerItems} />
+      )}
+      screenOptions={{ headerShown: false }}
+    />
   );
 };
 

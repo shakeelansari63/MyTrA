@@ -7,6 +7,7 @@ interface TopAppBarProps {
   title?: string;
   rightAction?: () => void;
   rightIcon?: string;
+  onTitlePressed?: () => void;
 }
 
 const TopAppBar = ({
@@ -15,14 +16,15 @@ const TopAppBar = ({
   rightAction,
   rightIcon,
   leftComponent,
+  onTitlePressed,
 }: TopAppBarProps) => {
   return (
     <Appbar.Header mode="small">
       {backAction && <Appbar.BackAction onPress={backAction} />}
       {leftComponent ? (
-        <Appbar.Content title={leftComponent} />
+        <Appbar.Content title={leftComponent} onPress={onTitlePressed} />
       ) : (
-        <Appbar.Content title={title ?? " "} />
+        <Appbar.Content title={title ?? " "} onPress={onTitlePressed} />
       )}
       {(rightAction || rightIcon) && (
         <Appbar.Action
