@@ -1,5 +1,5 @@
 import { Button, Card } from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
+import Dropdown, { type Option } from "@/components/shared/Dropdown";
 import { LLMDetail } from "@/models/LLMDetail";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Dialog from "@/components/shared/Dialog";
@@ -16,7 +16,11 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
     const [selectedProvider, setSelectedProvider] =
         React.useState<Provider | null>(null);
 
-    const providers = Providers.map((p) => ({ label: p.name, value: p.name }));
+    const providers: Option[] = Providers.map((p) => ({
+        name: p.name,
+        value: p.name,
+        icon: p.icon,
+    }));
 
     const onSelectProvider = (value: string | undefined) => {
         setSelectedProvider(Providers.find((p) => p.name === value) || null);
@@ -31,7 +35,6 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
                     value={selectedProvider?.name}
                     mode="outlined"
                     placeholder="Select Provider"
-                    hideMenuHeader={true}
                 />
             </Card.Content>
             <Card.Actions>
