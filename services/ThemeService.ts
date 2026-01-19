@@ -2,7 +2,6 @@ import {
   MD3DarkTheme,
   MD3LightTheme,
   adaptNavigationTheme,
-  type MD3Theme,
 } from "react-native-paper";
 import {
   DarkTheme as NavigationDarkTheme,

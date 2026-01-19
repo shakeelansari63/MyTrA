@@ -1,83 +1,95 @@
 import { ThemeProvider } from "@react-navigation/native";
 import { useColorScheme } from "react-native";
 import { themes } from "@/services/ThemeService";
-import { PaperProvider, Portal } from "react-native-paper";
+import { PaperProvider, Portal, Snackbar } from "react-native-paper";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PaperStyledDrawer, {
-    type DrawerItemInfo,
-    type DrawerItemsInSections,
+  type DrawerItemInfo,
+  type DrawerItemsInSections,
 } from "@/components/shared/PaperStyledDrawer";
 import { useRouter } from "expo-router";
+import React from "react";
+import { useSnackbar } from "@/hooks/useSnackbar";
+import { SnackbarContext } from "@/context/Snackbar";
 
 const DrawerApp = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const rootItems: DrawerItemInfo[] = [
-        {
-            key: "index",
-            label: "Home",
-            icon: "home-assistant",
-            onPress: () => router.navigate("/"),
-        },
-        {
-            key: "history",
-            label: "Past Chats",
-            icon: "history",
-            onPress: () => router.navigate("/history"),
-        },
-    ];
+  const rootItems: DrawerItemInfo[] = [
+    {
+      key: "index",
+      label: "Home",
+      icon: "home-assistant",
+      onPress: () => router.navigate("/"),
+    },
+    {
+      key: "history",
+      label: "Past Chats",
+      icon: "history",
+      onPress: () => router.navigate("/history"),
+    },
+  ];
 
-    const settingSectionItems: DrawerItemInfo[] = [
-        {
-            key: "llms",
-            label: "LLMs",
-            icon: "chat-processing-outline",
-            onPress: () => router.navigate("/llms"),
-        },
-        {
-            key: "mcps",
-            label: "MCP Servers",
-            icon: "server-network-outline",
-            onPress: () => router.navigate("/mcps"),
-        },
-        {
-            key: "agents",
-            label: "Agents",
-            icon: "robot-excited-outline",
-            onPress: () => router.navigate("/agents"),
-        },
-    ];
+  const settingSectionItems: DrawerItemInfo[] = [
+    {
+      key: "llms",
+      label: "LLMs",
+      icon: "chat-processing-outline",
+      onPress: () => router.navigate("/llms"),
+    },
+    {
+      key: "mcps",
+      label: "MCP Servers",
+      icon: "server-network-outline",
+      onPress: () => router.navigate("/mcps"),
+    },
+    {
+      key: "agents",
+      label: "Agents",
+      icon: "robot-excited-outline",
+      onPress: () => router.navigate("/agents"),
+    },
+  ];
 
-    const drawerItems: DrawerItemsInSections = {
-        root: rootItems,
-        sections: [
-            {
-                title: "Setup",
-                items: settingSectionItems,
-            },
-        ],
-    };
+  const drawerItems: DrawerItemsInSections = {
+    root: rootItems,
+    sections: [
+      {
+        title: "Setup",
+        items: settingSectionItems,
+      },
+    ],
+  };
 
-    return <PaperStyledDrawer drawerItems={drawerItems} />;
+  return <PaperStyledDrawer drawerItems={drawerItems} />;
 };
 
 export default function App() {
-    const colorScheme = useColorScheme();
-    const paperTheme =
-        colorScheme === "dark" ? themes.darkTheme : themes.lightTheme;
+  const snackbar = useSnackbar();
+  const colorScheme = useColorScheme();
+  const paperTheme =
+    colorScheme === "dark" ? themes.darkTheme : themes.lightTheme;
 
-    return (
-        <PaperProvider theme={paperTheme}>
-            <ThemeProvider value={paperTheme}>
-                <Portal.Host>
-                    <GestureHandlerRootView>
-                        <BottomSheetModalProvider>
-                            <DrawerApp />
-                        </BottomSheetModalProvider>
-                    </GestureHandlerRootView>
-                </Portal.Host>
-            </ThemeProvider>
-        </PaperProvider>
-    );
+  return (
+    <PaperProvider theme={paperTheme}>
+      <ThemeProvider value={paperTheme}>
+        <Portal.Host>
+          <GestureHandlerRootView>
+            <BottomSheetModalProvider>
+              <Snackbar
+                visible={snackbar.visible}
+                onDismiss={() => snackbar.hideSnackbar()}
+              >
+                {snackbar.message}
+              </Snackbar>
+              <SnackbarContext.Provider value={snackbar}>
+                <DrawerApp />
+              </SnackbarContext.Provider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </Portal.Host>
+      </ThemeProvider>
+    </PaperProvider>
+  );
 }
