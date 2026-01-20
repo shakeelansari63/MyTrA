@@ -10,7 +10,11 @@ export const useLLM = () => {
     if (!foundProvider && !llm.url) return null;
 
     // return provider URL or URL from llm object
-    return foundProvider?.url || llm.url;
+    let finalUrl = foundProvider?.url || llm.url;
+    if (finalUrl.endsWith("/")) {
+      finalUrl = finalUrl.slice(0, -1);
+    }
+    return finalUrl;
   };
 
   const testLLM = async (llm: LLMDetail): Promise<boolean> => {
@@ -31,6 +35,8 @@ export const useLLM = () => {
           Authorization: `Bearer ${llm.key}`,
         },
       });
+
+      console.log(response);
 
       // Check for valid response
       return response.ok;

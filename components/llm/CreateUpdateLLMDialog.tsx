@@ -9,8 +9,8 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import DialogTextInput from "@/components/shared/DialogTextInput";
 import { useLLM } from "@/hooks/useLLM";
-import { SnackbarContextModel } from "@/models/SnackbarContext";
-import { SnackbarContext } from "@/context/Snackbar";
+import { AlertContextModel } from "@/models/AlertContext";
+import { AlertContext } from "@/context/Alert";
 
 type Props = {
   llm: LLMDetail | null;
@@ -47,7 +47,7 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
 
   // LLM Hook
   const llmHelper = useLLM();
-  const snackbar = React.useContext<SnackbarContextModel>(SnackbarContext);
+  const alert = React.useContext<AlertContextModel>(AlertContext);
 
   // Set LLM Detail is passed as parameter
   React.useEffect(() => {
@@ -96,11 +96,13 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
   const testOrSave = async () => {
     if (isTested) {
       // Save logic here
+      console.log("tested fine");
     } else {
       // Test LLM Logic Here
       const testStatus = await llmHelper.testLLM(llmDetail);
+
       if (!testStatus) {
-        snackbar.showSnackbar("LLM test failed");
+        alert.showErrorAlert("LLM Test Failed");
       }
       setIsTested(testStatus);
     }

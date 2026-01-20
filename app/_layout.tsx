@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@react-navigation/native";
 import { useColorScheme } from "react-native";
 import { themes } from "@/services/ThemeService";
-import { PaperProvider, Portal, Snackbar } from "react-native-paper";
+import { PaperProvider, Portal } from "react-native-paper";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PaperStyledDrawer, {
@@ -10,8 +10,9 @@ import PaperStyledDrawer, {
 } from "@/components/shared/PaperStyledDrawer";
 import { useRouter } from "expo-router";
 import React from "react";
-import { useSnackbar } from "@/hooks/useSnackbar";
-import { SnackbarContext } from "@/context/Snackbar";
+import { useAlert } from "@/hooks/useAlert";
+import { AlertContext } from "@/context/Alert";
+import AlertViewer from "@/components/shared/AlertViewer";
 
 const DrawerApp = () => {
   const router = useRouter();
@@ -66,7 +67,7 @@ const DrawerApp = () => {
 };
 
 export default function App() {
-  const snackbar = useSnackbar();
+  const alert = useAlert();
   const colorScheme = useColorScheme();
   const paperTheme =
     colorScheme === "dark" ? themes.darkTheme : themes.lightTheme;
@@ -77,15 +78,15 @@ export default function App() {
         <Portal.Host>
           <GestureHandlerRootView>
             <BottomSheetModalProvider>
-              <Snackbar
-                visible={snackbar.visible}
-                onDismiss={() => snackbar.hideSnackbar()}
-              >
-                {snackbar.message}
-              </Snackbar>
-              <SnackbarContext.Provider value={snackbar}>
+              <AlertViewer
+                visible={alert.visible}
+                message={alert.message}
+                alertType={alert.alertType}
+                onDismiss={() => alert.hideAlert()}
+              />
+              <AlertContext.Provider value={alert}>
                 <DrawerApp />
-              </SnackbarContext.Provider>
+              </AlertContext.Provider>
             </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </Portal.Host>
