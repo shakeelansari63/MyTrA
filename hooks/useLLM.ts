@@ -1,47 +1,24 @@
-import { Providers } from "@/constants/Providers";
 import { LLMDetail } from "@/models/LLMDetail";
+import { getProviderUrl } from "@/services/ChatService";
 
 export const useLLM = () => {
-  const getProviderUrl = (llm: LLMDetail): string | null => {
-    // Try to get Provider URL from Providers list
-    const foundProvider = Providers.find((p) => p.name === llm.provider);
-
-    // If provider is not found, check if URL is provided in llm object
-    if (!foundProvider && !llm.url) return null;
-
-    // return provider URL or URL from llm object
-    let finalUrl = foundProvider?.url || llm.url;
-    if (finalUrl.endsWith("/")) {
-      finalUrl = finalUrl.slice(0, -1);
-    }
-    return finalUrl;
-  };
-
   const testLLM = async (llm: LLMDetail): Promise<boolean> => {
-    // Try to get provider url from Providers list
-    let providerUrl = getProviderUrl(llm);
+    const llmProviderUrl = getProviderUrl(llm);
 
-    // If url is not found, return false
-    if (!providerUrl) {
+    // Return false if the provider URL is not available
+    if (!llmProviderUrl) {
       return false;
     }
 
-    // Try to fetch models from provider URL
     try {
-      const response = await fetch(`${providerUrl}/models`, {
-        method: "GET",
+      const response = await fetch(`${llmProviderUrl}/models`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${llm.key}`,
         },
       });
 
-      console.log(response);
-
-      // Check for valid response
       return response.ok;
-    } catch (error) {
-      console.error(error);
+    } catch {
       return false;
     }
   };

@@ -5,8 +5,6 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Dialog from "@/components/shared/Dialog";
 import { Providers } from "@/constants/Providers";
 import React from "react";
-import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 import DialogTextInput from "@/components/shared/DialogTextInput";
 import { useLLM } from "@/hooks/useLLM";
 import { AlertContextModel } from "@/models/AlertContext";
@@ -27,7 +25,7 @@ type FieldDirtyChecker = {
 
 const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
   const [llmDetail, setLlmDetail] = React.useState<LLMDetail>({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     name: "",
     provider: "",
     url: "",
@@ -76,7 +74,7 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
 
     // Reset form fields
     setLlmDetail({
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       name: "",
       provider: "",
       url: "",
