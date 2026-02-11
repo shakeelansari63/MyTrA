@@ -9,6 +9,7 @@ import DialogTextInput from "@/components/shared/DialogTextInput";
 import { useLLM } from "@/hooks/useLLM";
 import { AlertContextModel } from "@/models/AlertContext";
 import { AlertContext } from "@/context/Alert";
+import * as Crypto from "expo-crypto";
 
 type Props = {
   llm: LLMDetail | null;
@@ -25,7 +26,7 @@ type FieldDirtyChecker = {
 
 const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
   const [llmDetail, setLlmDetail] = React.useState<LLMDetail>({
-    id: crypto.randomUUID(),
+    id: Crypto.randomUUID(),
     name: "",
     provider: "",
     url: "",
@@ -74,7 +75,7 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
 
     // Reset form fields
     setLlmDetail({
-      id: crypto.randomUUID(),
+      id: Crypto.randomUUID(),
       name: "",
       provider: "",
       url: "",

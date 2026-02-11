@@ -1,59 +1,59 @@
 {
-    "expo": {
-        "name": "MyTrA",
-        "slug": "mytra",
-        "version": "0.0.1b4",
-        "orientation": "portrait",
-        "icon": "./assets/images/icon.png",
-        "scheme": "mytra",
-        "userInterfaceStyle": "automatic",
-        "newArchEnabled": true,
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "me.shakeelansari.mytra",
-            "infoPlist": {
-                "ITSAppUsesNonExemptEncryption": false
-            }
-        },
-        "android": {
-            "adaptiveIcon": {
-                "backgroundColor": "#F0F0F5",
-                "foregroundImage": "./assets/images/icon.png"
-            },
-            "edgeToEdgeEnabled": true,
-            "predictiveBackGestureEnabled": false,
-            "package": "me.shakeelansari.mytra"
-        },
-        "web": {
-            "output": "static",
-            "favicon": "./assets/images/icon.png"
-        },
-        "plugins": [
-            "expo-router",
-            [
-                "expo-splash-screen",
-                {
-                    "image": "./assets/images/icon.png",
-                    "imageWidth": 200,
-                    "resizeMode": "contain",
-                    "backgroundColor": "#ffffff",
-                    "dark": {
-                        "backgroundColor": "#000000",
-                        "image": "./assets/images/icon-dark.png"
-                    }
-                }
-            ]
-        ],
-        "experiments": {
-            "typedRoutes": true,
-            "reactCompiler": true
-        },
-        "extra": {
-            "router": {},
-            "eas": {
-                "projectId": "c7443425-7812-4dd4-899e-dbf01ec3a48f"
-            }
-        },
-        "owner": "shakeelansari63"
-    }
+  "expo": {
+    "name": "MyTrA",
+    "slug": "mytra",
+    "version": "0.0.1b5",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "mytra",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "me.shakeelansari.mytra",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F0F0F5",
+        "foregroundImage": "./assets/images/icon.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "me.shakeelansari.mytra"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000",
+            "image": "./assets/images/icon-dark.png"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c7443425-7812-4dd4-899e-dbf01ec3a48f"
+      }
+    },
+    "owner": "shakeelansari63"
+  }
 }
