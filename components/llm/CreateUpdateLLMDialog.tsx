@@ -7,6 +7,7 @@ import { Providers } from "@/constants/Providers";
 import React from "react";
 import DialogTextInput from "@/components/shared/DialogTextInput";
 import { useLLM } from "@/hooks/useLLM";
+import { useDataProvider } from "@/hooks/useDataProvider";
 import { AlertContextModel } from "@/models/AlertContext";
 import { AlertContext } from "@/context/Alert";
 import * as Crypto from "expo-crypto";
@@ -14,6 +15,7 @@ import * as Crypto from "expo-crypto";
 type Props = {
   llm: LLMDetail | null;
   ref: React.RefObject<BottomSheetModal | null>;
+  onSaved: () => void;
 };
 
 type FieldDirtyChecker = {
@@ -24,9 +26,9 @@ type FieldDirtyChecker = {
   key: boolean;
 };
 
-const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
+const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
   const [llmDetail, setLlmDetail] = React.useState<LLMDetail>({
-    id: Crypto.randomUUID(),
+    id: "",
     name: "",
     provider: "",
     url: "",
@@ -46,12 +48,22 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
 
   // LLM Hook
   const llmHelper = useLLM();
+  const dataProvider = useDataProvider();
   const alert = React.useContext<AlertContextModel>(AlertContext);
 
   // Set LLM Detail is passed as parameter
   React.useEffect(() => {
     if (llm) {
       setLlmDetail(llm);
+    } else {
+      setLlmDetail({
+        id: Crypto.randomUUID(),
+        name: "",
+        provider: "",
+        url: "",
+        model: "",
+        key: "",
+      });
     }
   }, [llm]);
 
@@ -70,12 +82,10 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
   };
 
   const onCancel = () => {
-    // Hide the dialog
     ref.current?.dismiss();
 
-    // Reset form fields
     setLlmDetail({
-      id: Crypto.randomUUID(),
+      id: "",
       name: "",
       provider: "",
       url: "",
@@ -90,20 +100,23 @@ const CreateUpdateLLMDialog = ({ llm, ref }: Props) => {
       model: false,
       key: false,
     });
+
+    setIsTested(false);
   };
 
   const testOrSave = async () => {
     if (isTested) {
-      // Save logic here
-      console.log("tested fine");
+      await dataProvider.saveLLM(llmDetail);
+      onSaved();
+      onCancel();
     } else {
-      // Test LLM Logic Here
       const testStatus = await llmHelper.testLLM(llmDetail);
 
       if (!testStatus) {
         alert.showErrorAlert("LLM Test Failed");
+        return;
       }
-      setIsTested(testStatus);
+      setIsTested(true);
     }
   };
 

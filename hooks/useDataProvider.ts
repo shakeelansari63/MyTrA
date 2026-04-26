@@ -8,6 +8,7 @@ import {
   getRowByIdFromListStore,
   saveRowToStore,
   getRowFromStore,
+  deleteRowFromListStore,
 } from "@/services/DataService";
 
 const LLMKEY = "LLMS";
@@ -52,6 +53,10 @@ export const useDataProvider = () => {
     return await getRowByIdFromListStore<LLMDetail>(LLMKEY, id);
   };
 
+  const deleteLLM = async (id: string) => {
+    await deleteRowFromListStore(LLMKEY, id);
+  };
+
   const getMCPById = async (id: string) => {
     return await getRowByIdFromListStore<MCPServer>(MCPKEY, id);
   };
@@ -70,7 +75,6 @@ export const useDataProvider = () => {
     getAllAgents,
     getCurrentBot,
     getLLMById,
-    getMCPById,
-    getAgentById,
+    deleteLLM,
   };
 };

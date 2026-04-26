@@ -13,7 +13,6 @@ const LLMSetupPage = () => {
   const [selectedLLM, setSelectedLLM] = React.useState<LLMDetail | null>(null);
   const editRef = React.useRef<BottomSheetModal>(null);
 
-  // Hooks
   const dataProvider = useDataProvider();
 
   const loadLLMs = async () => {
@@ -22,7 +21,14 @@ const LLMSetupPage = () => {
   };
 
   const createNewLLM = () => {
-    setSelectedLLM(null);
+    setSelectedLLM({
+      id: "",
+      name: "",
+      provider: "",
+      url: "",
+      model: "",
+      key: "",
+    });
     editRef.current?.present();
   };
 
@@ -31,7 +37,11 @@ const LLMSetupPage = () => {
     editRef.current?.present();
   };
 
-  // Load LLM Models on Page Load
+  const deleteLLM = async (id: string) => {
+    await dataProvider.deleteLLM(id);
+    loadLLMs();
+  };
+
   React.useEffect(() => {
     loadLLMs();
   }, []);
@@ -42,10 +52,20 @@ const LLMSetupPage = () => {
         <FlatList
           data={llms}
           keyExtractor={(item) => item.id}
-          renderItem={(llm) => <LLMCard llm={llm.item} />}
+          renderItem={(llm) => (
+            <LLMCard
+              llm={llm.item}
+              onEdit={updateLLM}
+              onDelete={deleteLLM}
+            />
+          )}
         />
       </SafeScrollView>
-      <CreateUpdateLLMDialog llm={selectedLLM} ref={editRef} />
+      <CreateUpdateLLMDialog
+        llm={selectedLLM}
+        ref={editRef}
+        onSaved={loadLLMs}
+      />
       <BottomFab icon="plus" action={createNewLLM} />
     </>
   );

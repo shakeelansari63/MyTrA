@@ -55,10 +55,22 @@ export const getRowByIdFromListStore = async <T extends HasId>(
 ): Promise<T | null> => {
   const storedData = await AsyncStorage.getItem(key);
 
-  // Check if store has value
   if (!storedData) return null;
 
-  // Parse stored data and find item by id
   const dataList = JSON.parse(storedData) as T[];
   return dataList.find((item) => item.id === id) || null;
+};
+
+export const deleteRowFromListStore = async <T extends HasId>(
+  key: string,
+  id: string,
+): Promise<void> => {
+  const storedData = await AsyncStorage.getItem(key);
+
+  if (!storedData) return;
+
+  const dataList = JSON.parse(storedData) as T[];
+  const filteredList = dataList.filter((item) => item.id !== id);
+
+  await AsyncStorage.setItem(key, JSON.stringify(filteredList));
 };
