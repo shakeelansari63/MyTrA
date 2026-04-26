@@ -1,4 +1,4 @@
-import { Button, Card } from "react-native-paper";
+import { Button, Card, ActivityIndicator, Chip, Text } from "react-native-paper";
 import Dropdown, { type Option } from "@/components/shared/Dropdown";
 import { LLMDetail } from "@/models/LLMDetail";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -45,6 +45,7 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
   });
 
   const [isTested, setIsTested] = React.useState<boolean>(false);
+  const [isTesting, setIsTesting] = React.useState<boolean>(false);
 
   // LLM Hook
   const llmHelper = useLLM();
@@ -75,6 +76,9 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
 
   const onFormChange = (key: string, value: string) => {
     setLlmDetail({ ...llmDetail, [key]: value });
+    if (isTested) {
+      setIsTested(false);
+    }
   };
 
   const onFieldFocus = (key: string) => {
@@ -110,7 +114,9 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
       onSaved();
       onCancel();
     } else {
+      setIsTesting(true);
       const testStatus = await llmHelper.testLLM(llmDetail);
+      setIsTesting(false);
 
       if (!testStatus) {
         alert.showErrorAlert("LLM Test Failed");
@@ -181,10 +187,23 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
           mode="outlined"
           error={fieldDirty.model && !llmDetail?.model}
         />
+
+        {/* Test Status Feedback */}
+        {isTested && (
+          <Chip icon="check-circle" style={{ marginTop: 10 }} successful>
+            Connection Successful
+          </Chip>
+        )}
       </Card.Content>
       <Card.Actions>
         <Button onPress={onCancel}>Cancel</Button>
-        <Button onPress={testOrSave}>{isTested ? "Save" : "Test"}</Button>
+        <Button
+          onPress={testOrSave}
+          loading={isTesting}
+          disabled={isTesting}
+        >
+          {isTested ? "Save" : "Test"}
+        </Button>
       </Card.Actions>
     </Dialog>
   );
