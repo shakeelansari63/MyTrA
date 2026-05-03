@@ -1,5 +1,7 @@
+import { Message } from "@/models/Chat";
 import { LLMDetail } from "@/models/LLMDetail";
-import { getProviderUrl } from "@/services/ChatService";
+import { getLlmChat, getProviderUrl } from "@/services/ChatService";
+import { IMessage } from "react-native-gifted-chat";
 
 export const useLLM = () => {
   const testLLM = async (llm: LLMDetail): Promise<boolean> => {
@@ -23,7 +25,18 @@ export const useLLM = () => {
     }
   };
 
+  const llmChatResponse = async (
+    llm: LLMDetail,
+    messages: Message[],
+  ): Promise<string> => {
+    const llmChat = getLlmChat(llm);
+    const response = llmChat.invoke(messages);
+    console.log(response);
+    return response.content.toString();
+  };
+
   return {
     testLLM,
+    llmChatResponse,
   };
 };

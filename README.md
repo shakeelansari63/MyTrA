@@ -1,50 +1,156 @@
-# Welcome to your Expo app 👋
+# MyTrA - Your AI Assistant, Built in Your Pocket
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A powerful cross-platform mobile app built with Expo that lets you connect LLMs, MCP servers, and build AI agents — **without writing a single line of code**.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Multi-LLM Support**: Connect to Google, OpenAI, Anthropic, Deepseek, or any OpenAI-compatible provider
+- **MCP Server Integration**: Connect to Model Context Protocol servers to extend your agent's capabilities
+- **No-Code Agent Builder**: Create custom AI agents with specific roles, tasks, and tool access — all through a visual interface
+- **Real-time Chat**: Conversations powered by LangChain for robust AI interactions
+- **Chat History**: Access and revisit your past conversations anytime
+- **Dark & Light Mode**: Automatic theme switching that adapts to your system preferences
+- **Cross-Platform**: Runs on iOS, Android, and Web from a single codebase
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- **Framework**: React Native + Expo SDK 54
+- **Navigation**: Expo Router + React Navigation (Drawer + Bottom Tabs)
+- **AI/LLM**: LangChain + LangChain OpenAI
+- **UI**: React Native Paper, @gorhom/bottom-sheet
+- **Storage**: Async Storage
+- **Language**: TypeScript
 
-   ```bash
-   npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 18+
+- npm or yarn
+- Expo Go app (for mobile testing)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Installation
 
 ```bash
-npm run reset-project
+# Clone the repository
+git clone https://github.com/shakeelansari63/mytra.git
+cd mytra
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Running on Devices
 
-## Learn more
+```bash
+# iOS Simulator
+npm run ios
 
-To learn more about developing your project with Expo, look at the following resources:
+# Android Emulator
+npm run android
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Web Browser
+npm run web
 
-## Join the community
+# Expo Go (scan QR code from terminal)
+npm start
+```
 
-Join our community of developers creating universal apps.
+## App Screens
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+| Screen | Description |
+|--------|-------------|
+| **Chat** | Main chat interface for interacting with your agents |
+| **LLMs** | Add and manage LLM provider connections (API keys, models, endpoints) |
+| **MCP Servers** | Configure MCP server connections for extended tool capabilities |
+| **Agents** | Build custom agents by combining LLMs, MCP servers, roles, and tasks |
+| **Past Chats** | Browse and resume your conversation history |
+
+## Configuration
+
+### Adding an LLM Provider
+
+Navigate to the **LLMs** screen and provide:
+- **Provider**: Choose from Google, OpenAI, Anthropic, Deepseek, or Other
+- **API Key**: Your provider's API key
+- **Model**: The model name (e.g., `gpt-4o`, `claude-3-5-sonnet-20241022`)
+- **Custom URL** (optional): For "Other" providers or self-hosted instances
+
+### Connecting MCP Servers
+
+Navigate to the **MCP Servers** screen and provide:
+- **Server Name**: A friendly name for your server
+- **URL**: The MCP server endpoint
+- **API Key** (optional): Authentication key if required
+- **Transport**: Communication protocol
+
+### Building an Agent
+
+Navigate to the **Agents** screen and configure:
+- **Agent Name**: A unique name for your agent
+- **LLM**: Select a connected LLM provider
+- **MCP Servers**: Select one or more MCP servers for tool access
+- **Role**: Define the agent's role/persona
+- **Task Detail**: Provide specific instructions and context
+
+## Project Structure
+
+```
+mytra/
+├── app/                   # Expo Router screens
+│   ├── _layout.tsx        # Root layout with navigation
+│   ├── index.tsx          # Home/Chat screen
+│   ├── llms.tsx           # LLM provider management
+│   ├── mcps.tsx           # MCP server management
+│   ├── agents.tsx         # Agent builder
+│   └── history.tsx        # Chat history
+├── components/            # UI components
+│   ├── agent/             # Agent builder components
+│   ├── home/              # Chat page components
+│   ├── llm/               # LLM setup components
+│   ├── mcp/               # MCP setup components
+│   ├── history/           # History page components
+│   └── shared/            # Shared UI components
+├── services/              # Business logic
+│   ├── ChatService.ts     # LLM chat orchestration
+│   ├── DataService.ts     # Data persistence
+│   └── ThemeService.ts    # Theme management
+├── models/                # TypeScript type definitions
+│   ├── Agent.ts           # Agent model
+│   ├── Chat.ts            # Chat model
+│   ├── LLMDetail.ts       # LLM configuration model
+│   ├── MCPServer.ts       # MCP server model
+│   └── Provider.ts        # LLM provider model
+├── constants/             # App constants
+│   ├── Colors.ts          # Theme colors
+│   ├── Links.ts           # External links
+│   └── Providers.ts       # Supported LLM providers
+├── hooks/                 # Custom React hooks
+└── context/               # React context providers
+```
+
+## Build & Deploy
+
+### Using EAS Build
+
+```bash
+# Install EAS CLI
+npm run eas build:configure
+
+# Build for Android
+eas build --platform android
+
+# Build for iOS
+eas build --platform ios
+```
+
+## License
+
+Private
+
+## Author
+
+[Shakeel Ansari](https://github.com/shakeelansari63)

@@ -28,6 +28,7 @@ const SafeScrollView = ({
   return (
     <ViewComponent
       style={{
+        flex: 1,
         marginTop: unsafeTop ? 0 : safeAreaInsets.top,
         marginBottom: unsafeBottom ? 0 : safeAreaInsets.bottom,
         marginLeft: unsafeLeft

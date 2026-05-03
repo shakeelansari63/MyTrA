@@ -1,7 +1,7 @@
 import { Agent } from "@/models/Agent";
 import { LLMDetail } from "@/models/LLMDetail";
 import { MCPServer } from "@/models/MCPServer";
-import { CurrentBot } from "@/models/CurrentBot";
+import { Bot } from "@/models/Bot";
 import {
   saveRowToListStore,
   getAllRowsFromListStore,
@@ -29,7 +29,7 @@ export const useDataProvider = () => {
     await saveRowToListStore(AGENTKEY, agent);
   };
 
-  const saveCurrentBot = async (bot: CurrentBot) => {
+  const saveCurrentBot = async (bot: Bot) => {
     await saveRowToStore(CURRENTBOT, bot);
   };
 
@@ -75,6 +75,8 @@ export const useDataProvider = () => {
     getAllAgents,
     getCurrentBot,
     getLLMById,
+    getMCPById,
+    getAgentById,
     deleteLLM,
   };
 };

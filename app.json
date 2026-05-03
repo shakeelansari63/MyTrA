@@ -42,7 +42,8 @@
             "image": "./assets/images/icon-dark.png"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
