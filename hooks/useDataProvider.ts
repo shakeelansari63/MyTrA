@@ -1,7 +1,7 @@
 import { Agent } from "@/models/Agent";
 import { LLMDetail } from "@/models/LLMDetail";
 import { MCPServer } from "@/models/MCPServer";
-import { Bot } from "@/models/Bot";
+import { Chat } from "@/models/Chat";
 import {
   saveRowToListStore,
   getAllRowsFromListStore,
@@ -14,7 +14,8 @@ import {
 const LLMKEY = "LLMS";
 const MCPKEY = "MCPS";
 const AGENTKEY = "AGENTS";
-const CURRENTBOT = "CURRENTBOT";
+const CHATKEY = "CHATS";
+const RESTORECHAT = "RESTORECHAT";
 
 export const useDataProvider = () => {
   const saveLLM = async (llm: LLMDetail) => {
@@ -29,8 +30,12 @@ export const useDataProvider = () => {
     await saveRowToListStore(AGENTKEY, agent);
   };
 
-  const saveCurrentBot = async (bot: Bot) => {
-    await saveRowToStore(CURRENTBOT, bot);
+  const saveChat = async (chat: Chat) => {
+    await saveRowToListStore(CHATKEY, chat);
+  };
+
+  const saveRestoreChatId = async (chatId: string) => {
+    await saveRowToStore(RESTORECHAT, chatId);
   };
 
   const getAllLLMs = async () => {
@@ -45,8 +50,16 @@ export const useDataProvider = () => {
     return await getAllRowsFromListStore<Agent>(AGENTKEY);
   };
 
-  const getCurrentBot = async () => {
-    return await getRowFromStore(CURRENTBOT);
+  const getAllChats = async () => {
+    return await getAllRowsFromListStore<Chat>(CHATKEY);
+  };
+
+  const getRestoreChatId = async () => {
+    return await getRowFromStore(RESTORECHAT);
+  };
+
+  const clearRestoreChatId = async () => {
+    await saveRowToStore(RESTORECHAT, null);
   };
 
   const getLLMById = async (id: string) => {
@@ -57,6 +70,18 @@ export const useDataProvider = () => {
     await deleteRowFromListStore(LLMKEY, id);
   };
 
+  const deleteMCP = async (id: string) => {
+    await deleteRowFromListStore(MCPKEY, id);
+  };
+
+  const deleteAgent = async (id: string) => {
+    await deleteRowFromListStore(AGENTKEY, id);
+  };
+
+  const deleteChat = async (id: string) => {
+    await deleteRowFromListStore(CHATKEY, id);
+  };
+
   const getMCPById = async (id: string) => {
     return await getRowByIdFromListStore<MCPServer>(MCPKEY, id);
   };
@@ -65,18 +90,29 @@ export const useDataProvider = () => {
     return await getRowByIdFromListStore<Agent>(AGENTKEY, id);
   };
 
+  const getChatById = async (id: string) => {
+    return await getRowByIdFromListStore<Chat>(CHATKEY, id);
+  };
+
   return {
     saveLLM,
     saveMCP,
     saveAgent,
-    saveCurrentBot,
+    saveChat,
+    saveRestoreChatId,
     getAllLLMs,
     getAllMCPs,
     getAllAgents,
-    getCurrentBot,
+    getAllChats,
+    getRestoreChatId,
+    clearRestoreChatId,
     getLLMById,
     getMCPById,
     getAgentById,
+    getChatById,
     deleteLLM,
+    deleteMCP,
+    deleteAgent,
+    deleteChat,
   };
 };

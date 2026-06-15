@@ -1,24 +1,16 @@
 import { Message } from "@/models/Chat";
 import { LLMDetail } from "@/models/LLMDetail";
-import { getLlmChat, getProviderUrl } from "@/services/ChatService";
-import { IMessage } from "react-native-gifted-chat";
+import { getProviderUrl, llmChat } from "@/services/ChatService";
 
 export const useLLM = () => {
   const testLLM = async (llm: LLMDetail): Promise<boolean> => {
     const llmProviderUrl = getProviderUrl(llm);
-
-    // Return false if the provider URL is not available
-    if (!llmProviderUrl) {
-      return false;
-    }
+    if (!llmProviderUrl) return false;
 
     try {
       const response = await fetch(`${llmProviderUrl}/models`, {
-        headers: {
-          Authorization: `Bearer ${llm.key}`,
-        },
+        headers: { Authorization: `Bearer ${llm.key}` },
       });
-
       return response.ok;
     } catch {
       return false;
@@ -29,14 +21,12 @@ export const useLLM = () => {
     llm: LLMDetail,
     messages: Message[],
   ): Promise<string> => {
-    const llmChat = getLlmChat(llm);
-    const response = llmChat.invoke(messages);
-    console.log(response);
-    return response.content.toString();
+    const formatted = messages.map((m) => ({
+      role: m.role === "user" ? "user" : "assistant",
+      content: m.content,
+    }));
+    return llmChat(llm, formatted);
   };
 
-  return {
-    testLLM,
-    llmChatResponse,
-  };
+  return { testLLM, llmChatResponse };
 };

@@ -1,4 +1,4 @@
-import { Button, Card, ActivityIndicator, Chip, Text } from "react-native-paper";
+import { Button, Card, Chip } from "react-native-paper";
 import Dropdown, { type Option } from "@/components/shared/Dropdown";
 import { LLMDetail } from "@/models/LLMDetail";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -18,14 +18,6 @@ type Props = {
   onSaved: () => void;
 };
 
-type FieldDirtyChecker = {
-  name: boolean;
-  provider: boolean;
-  url: boolean;
-  model: boolean;
-  key: boolean;
-};
-
 const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
   const [llmDetail, setLlmDetail] = React.useState<LLMDetail>({
     id: "",
@@ -36,36 +28,34 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
     key: "",
   });
 
-  const [fieldDirty, setFieldDirty] = React.useState<FieldDirtyChecker>({
-    name: false,
-    provider: false,
-    url: false,
-    model: false,
-    key: false,
-  });
+  const [isTested, setIsTested] = React.useState(false);
+  const [isTesting, setIsTesting] = React.useState(false);
 
-  const [isTested, setIsTested] = React.useState<boolean>(false);
-  const [isTesting, setIsTesting] = React.useState<boolean>(false);
+  const nameRef = React.useRef("");
+  const urlRef = React.useRef("");
+  const keyRef = React.useRef("");
+  const modelRef = React.useRef("");
 
-  // LLM Hook
   const llmHelper = useLLM();
   const dataProvider = useDataProvider();
   const alert = React.useContext<AlertContextModel>(AlertContext);
 
-  // Set LLM Detail is passed as parameter
   React.useEffect(() => {
-    if (llm) {
+    if (llm?.id) {
       setLlmDetail(llm);
+      nameRef.current = llm.name;
+      urlRef.current = llm.url;
+      keyRef.current = llm.key;
+      modelRef.current = llm.model;
     } else {
-      setLlmDetail({
-        id: Crypto.randomUUID(),
-        name: "",
-        provider: "",
-        url: "",
-        model: "",
-        key: "",
-      });
+      const id = Crypto.randomUUID();
+      setLlmDetail({ id, name: "", provider: "", url: "", model: "", key: "" });
+      nameRef.current = "";
+      urlRef.current = "";
+      keyRef.current = "";
+      modelRef.current = "";
     }
+    setIsTested(false);
   }, [llm]);
 
   const providers: Option[] = Providers.map((p) => ({
@@ -74,43 +64,27 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
     icon: p.icon,
   }));
 
-  const onFormChange = (key: string, value: string) => {
-    setLlmDetail({ ...llmDetail, [key]: value });
-    if (isTested) {
-      setIsTested(false);
-    }
-  };
-
-  const onFieldFocus = (key: string) => {
-    setFieldDirty({ ...fieldDirty, [key]: true });
-  };
-
   const onCancel = () => {
     ref.current?.dismiss();
-
-    setLlmDetail({
-      id: "",
-      name: "",
-      provider: "",
-      url: "",
-      model: "",
-      key: "",
-    });
-
-    setFieldDirty({
-      name: false,
-      provider: false,
-      url: false,
-      model: false,
-      key: false,
-    });
-
+    const id = Crypto.randomUUID();
+    setLlmDetail({ id, name: "", provider: "", url: "", model: "", key: "" });
     setIsTested(false);
+    nameRef.current = "";
+    urlRef.current = "";
+    keyRef.current = "";
+    modelRef.current = "";
   };
 
   const testOrSave = async () => {
     if (isTested) {
-      await dataProvider.saveLLM(llmDetail);
+      const current: LLMDetail = {
+        ...llmDetail,
+        name: nameRef.current || llmDetail.name,
+        url: urlRef.current || llmDetail.url,
+        key: keyRef.current || llmDetail.key,
+        model: modelRef.current || llmDetail.model,
+      };
+      await dataProvider.saveLLM(current);
       onSaved();
       onCancel();
     } else {
@@ -126,71 +100,64 @@ const CreateUpdateLLMDialog = ({ llm, ref, onSaved }: Props) => {
     }
   };
 
+  const syncName = () => setLlmDetail((prev) => ({ ...prev, name: nameRef.current }));
+  const syncUrl = () => setLlmDetail((prev) => ({ ...prev, url: urlRef.current }));
+  const syncKey = () => setLlmDetail((prev) => ({ ...prev, key: keyRef.current }));
+  const syncModel = () => setLlmDetail((prev) => ({ ...prev, model: modelRef.current }));
+
   return (
-    <Dialog ref={ref} title={!!llm ? `Update ${llm.name}` : "Create LLM"}>
+    <Dialog ref={ref} title={llm ? `Update ${llm.name}` : "Create LLM"}>
       <Card.Content>
-        {/* LLM name input */}
         <DialogTextInput
           label="LLM Name"
           placeholder="LLM Name"
-          value={llmDetail?.name || ""}
-          onChangeText={(text) => onFormChange("name", text)}
-          onFocus={() => onFieldFocus("name")}
+          defaultValue={llmDetail.name}
+          onChangeText={(t) => { nameRef.current = t; }}
+          onBlur={syncName}
           mode="outlined"
-          error={fieldDirty.name && !llmDetail?.name}
         />
 
-        {/* Dropdown for Providers */}
         <Dropdown
           options={providers}
           label="LLM Provider"
-          onSelect={(text) => onFormChange("provider", text)}
-          value={llmDetail?.provider || undefined}
+          onSelect={(text) => setLlmDetail((prev) => ({ ...prev, provider: text }))}
+          value={llmDetail.provider || undefined}
           mode="outlined"
-          onFocus={() => onFieldFocus("provider")}
           placeholder="Select Provider"
-          error={fieldDirty.provider && !llmDetail?.provider}
           style={{ marginBottom: 10 }}
         />
 
-        {/* URL Input if Provider is Other */}
-        {llmDetail?.provider === "Other" && (
+        {llmDetail.provider === "Other" && (
           <DialogTextInput
             label="Other Provider URL"
             placeholder="https://..."
-            value={llmDetail?.url || ""}
-            onChangeText={(text) => onFormChange("url", text)}
-            onFocus={() => onFieldFocus("url")}
+            defaultValue={llmDetail.url}
+            onChangeText={(t) => { urlRef.current = t; }}
+            onBlur={syncUrl}
             mode="outlined"
-            error={fieldDirty.url && !llmDetail?.url}
           />
         )}
 
-        {/* API Key Input */}
         <DialogTextInput
           label="API Key"
           placeholder="API Key"
-          value={llmDetail?.key || ""}
-          onChangeText={(text) => onFormChange("key", text)}
-          onFocus={() => onFieldFocus("key")}
+          defaultValue={llmDetail.key}
+          onChangeText={(t) => { keyRef.current = t; }}
+          onBlur={syncKey}
           mode="outlined"
-          error={fieldDirty.key && !llmDetail?.key}
         />
 
-        {/* Model name Input */}
         <DialogTextInput
           label="Model Name"
           placeholder="Model Name"
-          value={llmDetail?.model || ""}
-          onChangeText={(text) => onFormChange("model", text)}
-          onFocus={() => onFieldFocus("model")}
+          defaultValue={llmDetail.model}
+          onChangeText={(t) => { modelRef.current = t; }}
+          onBlur={syncModel}
           mode="outlined"
-          error={fieldDirty.model && !llmDetail?.model}
         />
 
-        {/* Test Status Feedback */}
         {isTested && (
-          <Chip icon="check-circle" style={{ marginTop: 10 }} successful>
+          <Chip icon="check-circle" style={{ marginTop: 10 }}>
             Connection Successful
           </Chip>
         )}

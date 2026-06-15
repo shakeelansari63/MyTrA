@@ -6,7 +6,6 @@ export const AlertContext = createContext<AlertContextModel>({
   message: "",
   alertType: "info",
   showInfoAlert: (message: string) => {},
-  showWarnAlert: (message: string) => {},
   showErrorAlert: (message: string) => {},
   hideAlert: () => {},
 });

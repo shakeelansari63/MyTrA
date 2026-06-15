@@ -15,13 +15,6 @@ export const useAlert = (): AlertContextModel => {
     setTimeout(() => setVisible(false), 2000);
   };
 
-  const showWarnAlert = (message: string) => {
-    setMessage(message);
-    setVisible(true);
-    setAlertType("warn");
-    setTimeout(() => setVisible(false), 2000);
-  };
-
   const showErrorAlert = (message: string) => {
     setMessage(message);
     setVisible(true);
@@ -38,7 +31,6 @@ export const useAlert = (): AlertContextModel => {
     message,
     alertType,
     showInfoAlert,
-    showWarnAlert,
     showErrorAlert,
     hideAlert,
   };

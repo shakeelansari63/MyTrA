@@ -17,33 +17,55 @@ const BotSelector = ({ currentBot, setCurrentBot }: BotSelectorProps) => {
 
   const dataprovider = useDataProvider();
   const dialogRef = React.useRef<BottomSheetModal>(null);
+  const [loaded, setLoaded] = React.useState(false);
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      // get List of LLMs as Bot
+    (async () => {
       const llms = await dataprovider.getAllLLMs();
-      const llmBots: Bot[] = llms.map((llm) => ({
-        botType: "llm",
-        name: llm.name,
-        id: llm.id,
-      }));
-      setLlmBots(llmBots);
-
-      // get list of Agents as Bot
+      setLlmBots(
+        llms.map((llm) => ({
+          botType: "llm",
+          name: llm.name,
+          id: llm.id,
+        }))
+      );
       const agents = await dataprovider.getAllAgents();
-      const agentsBots: Bot[] = agents.map((agent) => ({
-        botType: "agent",
-        name: agent.name,
-        id: agent.id,
-      }));
-      setAgentsBots(agentsBots);
-    };
-    fetchData();
+      setAgentsBots(
+        agents.map((agent) => ({
+          botType: "agent",
+          name: agent.name,
+          id: agent.id,
+        }))
+      );
+      setLoaded(true);
+    })();
   }, []);
+
+  const open = async () => {
+    if (loaded) {
+      const llms = await dataprovider.getAllLLMs();
+      setLlmBots(
+        llms.map((llm) => ({
+          botType: "llm",
+          name: llm.name,
+          id: llm.id,
+        }))
+      );
+      const agents = await dataprovider.getAllAgents();
+      setAgentsBots(
+        agents.map((agent) => ({
+          botType: "agent",
+          name: agent.name,
+          id: agent.id,
+        }))
+      );
+    }
+    dialogRef.current?.present();
+  };
 
   return (
     <View>
-      <Button onPress={() => dialogRef.current?.present()}>
+      <Button onPress={open}>
         {currentBot?.name ?? "Select a Bot"}
       </Button>
       <Dialog ref={dialogRef} title="Select Bot">
@@ -65,7 +87,6 @@ const BotSelector = ({ currentBot, setCurrentBot }: BotSelectorProps) => {
                     }}
                   />
                 ))}
-                )
               </List.Section>
             )}
 

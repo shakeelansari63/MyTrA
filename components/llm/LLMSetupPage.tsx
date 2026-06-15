@@ -21,14 +21,7 @@ const LLMSetupPage = () => {
   };
 
   const createNewLLM = () => {
-    setSelectedLLM({
-      id: "",
-      name: "",
-      provider: "",
-      url: "",
-      model: "",
-      key: "",
-    });
+    setSelectedLLM(null);
     editRef.current?.present();
   };
 

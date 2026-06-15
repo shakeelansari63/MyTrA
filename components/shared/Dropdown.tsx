@@ -104,7 +104,6 @@ const Dropdown = ({
 
   const onItemSelect = (value: string) => {
     onSelect(value);
-    toggleDropdown();
   };
 
   return (
